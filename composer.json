@@ -1,0 +1,18 @@
+{
+    "name": "lenovoip3/new-home-for-pet",
+    "description": ",Reset password functionality for New Home For Pet\"",
+    "autoload": {
+        "psr-4": {
+            "Lenovoip3\\NewHomeForPet\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "NastovskA",
+            "email": "angelanastovska23@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.10"
+    }
+}
