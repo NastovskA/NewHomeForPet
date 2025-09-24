@@ -1,19 +1,14 @@
 <?php
 session_start();
 
-require __DIR__ . '/config/config.php';
-require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../config/database.php';
+
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// PDO connection
-try {
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
 
 // Example user data - in a real application, this would come from session or database
 $user_id = 1;
@@ -45,51 +40,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if(empty($error)) {
-        // Insert into database (adoption_requests)
-        $stmt = $pdo->prepare("
-            INSERT INTO adoption_requests 
-            (user_id, full_name, animal_type, animal_id, living_place, dob, occupation, email, phone, 
-             living_situation, community_agree, children_info, housing_type, ownership, landlord_permission, 
-             balcony_yard, fenced, reason, responsible_person, pet_living_place, alone_hours, care_when_absent, 
-             walk_frequency, had_pet, gave_up_pet, current_pet, understand_law, additional_contact, 
-             comments, visit_day, visit_time, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-        ");
-
-        try {
-            $stmt->execute([
-                $user_id,
-                $answers['full_name'],
-                $answers['animal_type'],
-                $answers['animal_id'] ?? 0,
-                $answers['living_place'],
-                $answers['dob'],
-                $answers['occupation'],
-                $answers['email'],
-                $answers['phone'],
-                $answers['living_situation'],
-                $answers['community_agree'],
-                $answers['children_info'],
-                $answers['housing_type'],
-                $answers['ownership'],
-                $answers['landlord_permission'],
-                $answers['balcony_yard'],
-                $answers['fenced'],
-                $answers['reason'],
-                $answers['responsible_person'],
-                $answers['pet_living_place'],
-                $answers['alone_hours'],
-                $answers['care_when_absent'],
-                $answers['walk_frequency'],
-                $answers['had_pet'],
-                $answers['gave_up_pet'],
-                $answers['current_pet'],
-                $answers['understand_law'],
-                $answers['additional_contact'],
-                $answers['comments'] ?? '',
-                $answers['visit_day'],
-                $answers['visit_time']
-            ]);
 
             // PHPMailer
             $mail = new PHPMailer(true);
@@ -124,16 +74,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mail->send();
 
                 $success = "Your adoption request has been submitted successfully! A confirmation email has been sent to {$answers['email']}.";
+header("Location: " . BASE_URL . "/home/index");
+exit;
+
 
             } catch(Exception $e) {
                 $error = "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
 
-        } catch(PDOException $e) {
-            $error = "Database error: ".$e->getMessage();
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -910,6 +860,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 submitBtn.disabled = true;
                 
                 // Allow form to submit
+
+                
             });
             
             // Initialize progress

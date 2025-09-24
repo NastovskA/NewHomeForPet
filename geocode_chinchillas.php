@@ -26,7 +26,7 @@ function getCoordinatesByCity($city) {
 }
 
 // Само за chinchillas
-$table = 'chinchillas';
+$table = 'animals';
 $result = $conn->query("SELECT id, city FROM $table WHERE lat IS NULL OR lon IS NULL");
 while ($row = $result->fetch_assoc()) {
     $coords = getCoordinatesByCity($row['city']);

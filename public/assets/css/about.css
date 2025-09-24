@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - PetHeart | The Global Community for Pet Lovers</title>
-    <meta name="description" content="Discover PetHeart's mission to connect pet lovers worldwide through a supportive community, expert resources, and shared stories of unconditional love.">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+
 :root {
     /* Primary Palette – Soft, Elegant */
     --primary-color: #3d0092ff;       /* Softer Lavender (slightly richer than before) */
@@ -15,13 +6,13 @@
     --accent-secondary: #030c09ff;      /* Soft Mint for contrast elements */
 
     /* Backgrounds – Smooth Gradient Flow */
-    --background-dark: #ad99ddff;     /* Deep lavender for cards and sections */
-    --background-light: #7b66b4ff;    /* Slightly lighter lilac for hover/buttons */
-    --background-lighter: #9b93ccff;  /* Neutral grayish-purple for page base */
+    --background-dark: rgb(154, 122, 228);     /* Deep lavender for cards and sections */
+    --background-light: rgb(134, 113, 193);    /* Slightly lighter lilac for hover/buttons */
+    --background-lighter: rgb(177, 173, 203);  /* Neutral grayish-purple for page base */
 
     /* Text Colors */
     --text-primary: rgba(23, 1, 37, 0.65);          /* Main text */
-    --text-secondary: rgba(252, 253, 255, 0.85);
+    --text-secondary: rgba(0, 0, 0, 0.85);
     --text-muted: rgba(20, 1, 33, 0.65); /* Slightly stronger contrast */
 
     /* Glassmorphism Variables */
@@ -247,7 +238,7 @@
             font-size: 68px;
             font-weight: 800;
             margin-bottom: 28px;
-            background: linear-gradient(135deg, var(--text-primary), #d46ca9ff);
+            background: linear-gradient(135deg, var(--text-secondary), rgb(217, 60, 152));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -258,7 +249,7 @@
 
         .hero-subtitle {
             font-size: 26px;
-            color: var(--text-secondary);
+            color: var(--text-secondary, black);
             margin-bottom: 48px;
             animation: subtitleSlideUp 1s ease-out 0.2s both;
             max-width: 800px;
@@ -507,7 +498,7 @@
         .timeline-title {
             font-size: 24px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text-secondary);
             margin-bottom: 16px;
         }
 
@@ -565,7 +556,7 @@
         }
 
         .value-item:nth-child(1) .value-icon { background:var(--accent-gradient); color: #d7d1e0ff;}
-        .value-item:nth-child(2) .value-icon { background: var(--accent-gradient); color: #e5e1eaff; }
+        .value-item:nth-child(2) .value-icon { background: var(--accent-gradient); color: rgb(0, 0, 0); }
         .value-item:nth-child(3) .value-icon { background: var(--accent-gradient); color: #5a4d6d; }
 
         .value-icon {
@@ -1129,215 +1120,3 @@
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #b491d1, #8a66b5);
         }
-    </style>
-</head>
-<body>
-    <div class="background-elements">
-        <div class="bg-circle bg-circle-1"></div>
-        <div class="bg-circle bg-circle-2"></div>
-        <div class="bg-circle bg-circle-3"></div>
-    </div>
-
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="../index.php" class="logo">
-                <span class="logo-icon">🐾</span>
-                <span>PetHeart</span>
-            </a>
-            <div class="nav-links">
-            <a href="../index.php" class="nav-link">Home</a>
-            <a href="#" class="nav-link nav-link--active">About us</a>
-            <a href="contact.php" class="nav-link">Contact</a>
-            <a href="landing.php" class="nav-link nav-link--primary">Log in</a>
-            <a href="users/register.php" class="nav-link nav-link--secondary">Sign up</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="main-content">
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">Our Passion for Pets Connects the World</h1>
-                <h1 class="hero-subtitle">🐾 PetHeart – Every Pet Deserves a Home 🐾</h1>
-                <p class="hero-subtitle">
-
-Join the world’s caring community where love meets adoption. At PetHeart, we connect pets in need with families ready to give them a forever home. Because adoption is not just about saving lives – it’s about creating unbreakable bonds.
-                </p>
-            </div>
-        </section>
-
-        <section class="story-section">
-            <div class="section-container">
-                <h2 class="section-title">  Our Journey</h2>
-               
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2022</div>
-                            <h3 class="timeline-title">Concept Development</h3>
-                            <p class="timeline-description">
-                                Our founders identified the need for a dedicated pet lover community 
-                                while working on veterinary telehealth solutions.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2023</div>
-                            <h3 class="timeline-title">Beta Launch</h3>
-                            <p class="timeline-description">
-                                Initial platform launched with 1,000 early adopters providing 
-                                valuable feedback to shape our direction.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2024</div>
-                            <h3 class="timeline-title">Official Launch</h3>
-                            <p class="timeline-description">
-                                Full platform release with mobile apps, expert Q&A system, 
-                                and localized communities in 5 languages.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-year">2025</div>
-                            <h3 class="timeline-title">Global Expansion</h3>
-                            <p class="timeline-description">
-                                Surpassed 50,000 members and expanded our operations to serve 
-                                communities in over 30 countries.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mission-section">
-            <div class="section-container">
-                <h2 class="section-title">Our Mission</h2>
-                <p class="mission-text">
-                    Our mission is to foster a world where every pet is cherished and every pet lover feels connected. We achieve this by creating a safe, informative, and engaging platform that promotes responsible pet ownership and celebrates the joy our animal companions bring to our lives.
-                </p>
-                <div class="mission-values">
-                    <div class="value-item">
-                        <div class="value-icon">🫂</div>
-                        <h3 class="value-title">Community First</h3>
-                        <p class="value-description">
-                            We believe a strong community is built on empathy, respect, and shared experiences. We empower our members to support one another through every stage of their pet's life.
-                        </p>
-                    </div>
-                    <div class="value-item">
-                        <div class="value-icon">📖</div>
-                        <h3 class="value-title">Knowledge is Key</h3>
-                        <p class="value-description">
-                            We provide access to expert-vetted resources and tools, ensuring our members have the information they need to provide the best care for their pets.
-                        </p>
-                    </div>
-                    <div class="value-item">
-                        <div class="value-icon">❤️</div>
-                        <h3 class="value-title">Unconditional Love</h3>
-                        <p class="value-description">
-                            Our platform is a celebration of the unique and unbreakable bond between humans and their pets. We champion diversity in pet ownership and the many forms love takes.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="team-section">
-            <div class="section-container">
-                <h2 class="section-title">Meet Our Founders</h2>
-                <p class="team-subtitle">
-                    Our leadership team is a blend of veterinary science, technology, and a lifelong passion for animal welfare. We're united by the goal of making PetHeart a force for good in the global pet community.
-                </p>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="member-avatar">
-                        <img src="monika.png" alt="Team Member" />
-                        </div>
-                        <h3 class="member-name">Dr. Monika Stoilkovska</h3>
-                        <div class="member-role">Co-Founder & Chief Veterinary Officer</div>
-                        <p class="member-description">
-                            Dr. Monika Stoilkovska has over 15 years of experience in small animal medicine. She leads our veterinary team, ensuring that all content, advice, and resources are scientifically accurate and safe for pets.
-                        </p>
-
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">
-                        <img src="jhon.png" alt="Team Member" />
-                        </div>
-                        <h3 class="member-name">Leo Chen</h3>
-                        <div class="member-role">Chief Technology Officer</div>
-                        <p class="member-description">
-                            Leo is the architect behind PetHeart's innovative platform. He's a full-stack developer with a passion for creating user-friendly and scalable social networks.
-                        </p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">
-                        <img src="slika_angela.png" alt="Team Member" />
-                        </div>
-                        <h3 class="member-name">Angela Nastovska</h3>
-                        <div class="member-role">Co-Founder & Community Lead</div>
-                        <p class="member-description">
-                            Angela has a strong background in digital marketing and community engagement. She is the driving force behind PetHeart, building meaningful connections and ensuring every member feels supported and valued.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="cta-section">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to Join Our Pack?</h2>
-                <p class="cta-text">
-                    Whether you're a new pet parent or a seasoned animal enthusiast, there's a place for you at PetHeart. Sign up today and start sharing your pet's journey with a community that truly gets it.
-                </p>
-                <div class="cta-buttons">
-                    <a href="users/register.php" class="btn btn--secondary">
-                        Join the Community
-                        <span style="font-size: 1.5em;">➔</span>
-                    </a>
-                    <a href="../index.php" class="btn btn--secondary">
-                        Explore Stories
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <footer class="footer">
-        
-        <div class="footer-bottom">
-            <p class="copyright">© 2025 PetHeart. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://www.facebook.com/" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://x.com/" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.instagram.com/" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="lhttps://www.linkedin.com/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    </script>
-</body>
-</html>

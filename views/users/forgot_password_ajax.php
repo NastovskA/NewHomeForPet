@@ -6,6 +6,8 @@ use PHPMailer\PHPMailer\Exception;
 session_start();
 header('Content-Type: application/json');
 
+
+
 // Вклучи Composer autoload
 require __DIR__ . '/../../vendor/autoload.php';
 

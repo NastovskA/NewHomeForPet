@@ -110,7 +110,7 @@
       .attr("width", width)
       .attr("height", height * 0.92); // отсечи долниот 8%
 
-    // 🌍 Проекција со подобра центрираност
+    // 🌍 Проекција
     const projection = d3.geoNaturalEarth1()
                          .scale(width / 6.8)
                          .translate([width / 2, height / 2.2]);
@@ -126,10 +126,6 @@
 
     const tooltip = d3.select("#tooltip");
 
-    const colorScale = d3.scaleOrdinal()
-      .domain(["cats", "dogs", "parrots", "hamsters", "rabbits", "chinchillas"])
-      .range(["#4ECDC4", "#FF6B6B", "#FFD93D", "#6A4C93", "#FFA500", "#28eb1dff"]);
-
     // 🌍 Вчитување на мапа
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(worldData => {
       const countries = topojson.feature(worldData, worldData.objects.countries).features;
@@ -143,9 +139,18 @@
         .attr("stroke", "#282626ff");
 
       // 🐾 Вчитување животни
-      fetch("views/pets_data.php")
+      fetch("/NewHomeForPet/views/pets_data.php")
         .then(response => response.json())
         .then(animalData => {
+          // Автоматски извлечи уникатни категории
+          const categories = [...new Set(animalData.map(d => d.type))];
+
+          // 🎨 Додај боја за секоја категорија
+          const colorScale = d3.scaleOrdinal()
+                               .domain(categories)
+                               .range(d3.schemeSet2);
+
+          // 📍 Цртање точки
           pointsLayer.selectAll("circle")
             .data(animalData)
             .enter()
@@ -170,7 +175,7 @@
 
           // 🎨 Легенда
           const legendContainer = d3.select("#legend-bar");
-          colorScale.domain().forEach(type => {
+          categories.forEach(type => {
             const item = legendContainer.append("div").attr("class", "legend-item");
             item.append("div")
                 .attr("class", "legend-color")

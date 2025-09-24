@@ -21,22 +21,29 @@ function getCoordinatesByCity($city) {
     curl_close($ch);
 
     $data = json_decode($response, true);
-    if(isset($data[0])) return ['lat'=>floatval($data[0]['lat']), 'lon'=>floatval($data[0]['lon'])];
+    if(isset($data[0])) {
+        return ['lat'=>floatval($data[0]['lat']), 'lon'=>floatval($data[0]['lon'])];
+    }
     return ['lat'=>0, 'lon'=>0];
 }
 
-// Таблици
-$tables = ['cats','dogs','parrots','hamsters','rabbits', 'chinchillas'];
+// Земи ги сите животни од табелата animals
+$result = $conn->query("SELECT id, city FROM animals");
 
-foreach ($tables as $table) {
-    $result = $conn->query("SELECT id, city FROM $table");
+if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $coords = getCoordinatesByCity($row['city']);
-        $conn->query("UPDATE $table SET lat={$coords['lat']}, lon={$coords['lon']} WHERE id={$row['id']}");
+        $lat = $coords['lat'];
+        $lon = $coords['lon'];
+
+        $conn->query("UPDATE animals SET lat=$lat, lon=$lon WHERE id={$row['id']}");
+
         sleep(1); // Nominatim limit: 1 request per second
-        echo "Updated {$table} id {$row['id']} ({$row['city']})<br>";
+        echo "Updated animal id {$row['id']} ({$row['city']}) → [$lat, $lon]<br>";
         flush();
     }
+} else {
+    echo "No animals found in the table.";
 }
 
 echo "All done!";

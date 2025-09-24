@@ -7,7 +7,6 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Прочитај JSON тело од AJAX
         $input = json_decode(file_get_contents('php://input'), true);
         $email = trim($input['email'] ?? '');
         $password = $input['password'] ?? '';
@@ -21,10 +20,16 @@ try {
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$user) {
-            echo json_encode(['status' => 'no_user', 'message' => 'A user with this email does not exist.']);
-            exit();
-        }
+if (!$user) {
+    // Враќаме специфичен статус за redirect со точна локација
+    echo json_encode([
+        'status' => 'redirect_register',
+        'message' => 'Email not found. Redirecting to register.',
+        'redirect_url' => 'https://localhost/NewHomeForPet/views/users/register.php'  // тука ја ставаш директната URL
+    ]);
+    exit();
+}
+
 
         if (password_verify($password, $user['password'])) {
             $_SESSION['logged_in'] = true;

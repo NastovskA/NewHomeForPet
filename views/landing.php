@@ -688,8 +688,8 @@
             </a>
             <div class="nav-links">
                 <a href="../index.php" class="nav-link">Home</a>
-                <a href="aboutUs.php" class="nav-link">About us</a>
-                <a href="contact.php" class="nav-link">Contact</a>
+                <a href="../about/index" class="nav-link">About us</a>
+                <a href="../contact" class="nav-link">Contact</a>
                 <a href="#" class="nav-link nav-link--primary">Log in</a>
                 <a href="users/register.php" class="nav-link nav-link--secondary">Sign up</a>
             </div>
@@ -759,72 +759,35 @@ document.getElementById('forgotPasswordLink').addEventListener('click', async fu
     e.preventDefault();
 
     const emailInput = document.getElementById('email').value.trim();
-
     if (!emailInput) {
         alert('Please enter your email in the field to receive a password reset link.');
         return;
     }
 
     try {
-        const response = await fetch('http://localhost/NewHomeForPet/views/users/forgot_password_ajax.php', {
+        const response = await fetch('../users/forgot_password.php', {  // исправи ја патеката
             method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'email=' + encodeURIComponent(emailInput)
         });
 
-        console.log('Fetch response status:', response.status);
-
-        // ако серверот врати нешто што не е JSON (пример PHP грешка), ова ќе фрли error
-        const text = await response.text();
-        console.log('Raw response:', text);
-
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch (err) {
-            throw new Error("The server returned invalid JSON: " + text);
+        // проверка дали response е OK
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
         }
 
-        console.log('Fetch response JSON:', data);
+        const data = await response.json();  // чита JSON response од PHP
+        console.log('Response from server:', data);
 
         if (data.success) {
             alert(data.message);
         } else {
-            alert("Error: " + data.message); // 👈 сега ќе ја гледаш точната порака од PHP
+            alert("Error: " + data.message);
         }
+
     } catch (error) {
         alert('Fetch error: ' + error.message);
         console.error('Fetch error:', error);
-    }
-});
-
-
-
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();  // Спри ја класичната испорака
-
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    try {
-        const response = await fetch('users/login.php', {   // односно со точната патека каде ти е login.php
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password})
-        });
-
-        const result = await response.json();
-
-        if (result.status === 'success') {
-            window.location.href = '../meet_new_buddy.php';
-        } else if (result.status === 'no_user') {
-            alert(result.message + " You will be redirected to registration.");
-            window.location.href = 'users/register.php';
-        } else {
-            alert(result.message);
-        }
-    } catch (error) {
-        alert('Connection error. Please try again.');
     }
 });
 </script>
@@ -1182,6 +1145,47 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             console.error('PetHeart Unhandled Promise Rejection:', event.reason);
             // Could send to analytics service
         });
+
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    // Reset errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    try {
+        const response = await fetch('users/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            // Redirect to dashboard or home
+            window.location.href = '../meet/index';
+        } else if (data.status === 'no_user') {
+            emailError.textContent = data.message;
+        } else if (data.status === 'wrong_password') {
+            passwordError.textContent = data.message;
+        } else {
+            // Generic error
+            alert(data.message);
+        }
+    } catch (err) {
+        console.error('Login fetch error:', err);
+        alert('Technical error. Please try again later.');
+    }
+});
+
     </script>
 </body>
 </html>

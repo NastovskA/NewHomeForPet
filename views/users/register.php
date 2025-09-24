@@ -155,7 +155,7 @@ class UserRegistration {
         ]);
 
         echo "<script>
-        alert('Registration was successful!');
+
         window.location.href = '../../index.php';
         </script>";
         exit;
@@ -662,29 +662,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h2>Create Your Account</h2>
                 </div>
 
-                <?php if ($registrationResult): ?>
-                    <?php if ($registrationResult['success']): ?>
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle"></i>
-                            <?= htmlspecialchars($registrationResult['message']) ?>
-                            <script>
-                                setTimeout(function() {
-                                    window.location.href = 'login.php';
-                                }, 3000);
-                            </script>
-                        </div>
-                    <?php else: ?>
-                        <div class="alert alert-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <strong>Please correct the following issues:</strong>
-                            <ul class="error-list">
-                                <?php foreach ($registrationResult['errors'] as $error): ?>
-                                    <li><?= htmlspecialchars($error) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    <?php endif; ?>
-                <?php endif; ?>
+                <?php
+if ($registrationResult && $registrationResult['success']) {
+    // Само пренасочување ако регистрацијата е успешна
+    header("Location: login.php");
+    exit;
+} elseif ($registrationResult && !$registrationResult['success']) {
+    // Тука можеш да прикажеш само грешки без alert, ако сакаш
+    foreach ($registrationResult['errors'] as $error) {
+        echo htmlspecialchars($error) . "<br>";
+    }
+}
+?>
 
                 <form method="POST" action="" novalidate>
                     <div class="form-grid">

@@ -1,110 +1,4 @@
 
-
-<?php
-// Database connection
-$db_host = 'localhost';
-$db_name = 'adoption_fostering';
-$db_user = 'root';
-$db_pass = '';
-try {
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
-}
-
-// Get filter parameters
-$animal_type = $_GET['animal_type'] ?? '';
-$gender      = $_GET['gender'] ?? '';
-$min_age     = isset($_GET['min_age']) ? (int)$_GET['min_age'] : '';
-$max_age     = isset($_GET['max_age']) ? (int)$_GET['max_age'] : '';
-$country     = $_GET['country'] ?? '';
-$page        = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$per_page    = 12;
-$offset      = ($page - 1) * $per_page;
-
-// Define all animal tables
-$tables = ['cats', 'dogs', 'rabbits', 'parrots', 'hamsters', 'chinchillas'];
-
-// Build UNION query for all tables
-$union_queries = [];
-foreach ($tables as $table) {
-    $union_queries[] = "SELECT id, name, age, pol AS gender, breed, description, 
-                               '$table' AS animal_type, activity, country, city, 
-                               adopted, images_url, vakcinirano, created_at 
-                        FROM $table WHERE adopted = 0";
-}
-$union_sql = implode(' UNION ALL ', $union_queries);
-
-$conditions = [];
-$params     = [];
-
-if (!empty($animal_type)) {
-    if (in_array($animal_type, $tables)) {
-        $conditions[] = "animal_type = :animal_type";
-        $params[':animal_type'] = $animal_type;
-    }
-}
-
-if (!empty($gender)) {
-    $conditions[] = "gender = :gender";
-    $params[':gender'] = $gender;
-}
-
-if (!empty($min_age)) {
-    $conditions[] = "age >= :min_age";
-    $params[':min_age'] = $min_age;
-}
-
-if (!empty($max_age)) {
-    $conditions[] = "age <= :max_age";
-    $params[':max_age'] = $max_age;
-}
-
-if (!empty($country)) {
-    $conditions[] = "country = :country";
-    $params[':country'] = $country;
-}
-
-$where_clause = $conditions ? "WHERE " . implode(" AND ", $conditions) : "";
-
-// Count total
-$count_sql = "SELECT COUNT(*) FROM ($union_sql) as all_animals $where_clause";
-$count_stmt = $pdo->prepare($count_sql);
-$count_stmt->execute($params);
-$total_records = $count_stmt->fetchColumn();
-$total_pages   = ceil($total_records / $per_page);
-
-// Get paginated data
-$sql = "SELECT * FROM ($union_sql) as all_animals $where_clause 
-        ORDER BY id DESC 
-        LIMIT :limit OFFSET :offset";
-$stmt = $pdo->prepare($sql);
-
-// Bind filter params
-foreach ($params as $key => $value) {
-    $stmt->bindValue($key, $value);
-}
-$stmt->bindValue(':limit', $per_page, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-
-$stmt->execute();
-$animals = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch unique countries for filter
-$countries = [];
-foreach ($tables as $table) {
-    $stmt_country = $pdo->query("SELECT DISTINCT country FROM $table WHERE country IS NOT NULL AND country <> ''");
-    $countries = array_merge($countries, $stmt_country->fetchAll(PDO::FETCH_COLUMN));
-}
-$countries = array_unique($countries);
-sort($countries);
-
-// Available types for filter dropdown
-$animal_types = $tables;
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,7 +6,8 @@ $animal_types = $tables;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PetHeart - Find Your Perfect Companion</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
+    <link rel="stylesheet" href="/NewHomeForPet/public/assets/css/style.css">
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
         * {
@@ -658,48 +553,50 @@ $animal_types = $tables;
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="#hero" class="logo">
-                    <i class="fas fa-heart"></i>
-                    PET HEART
-                </a>
-                <nav>
-                    <ul>
-                        <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
-                        <li><a href="meet_new_buddy.php"><i class="fas fa-paw"></i> Meet Buddies</a></li>
-                        <li><a href="give_new_home.php"><i class="fas fa-paw"></i> Loving Home Needed </a></li>
-                        <li><a href="views/aboutUs.php"><i class="fas fa-info-circle"></i> About</a></li>
-                        <li><a href="views/contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="<?= BASE_URL ?>/home" class="logo">
+                <i class="fas fa-heart"></i>
+                PET HEART
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="<?= BASE_URL ?>/home"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="<?= BASE_URL ?>/about"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="<?= BASE_URL ?>/contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="<?= BASE_URL ?>/give"><i class="fas fa-paw"></i> New Home</a></li>
+                </ul>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>
+
 
     <main>
         <div class="container">
             <h1 class="page-title">Find Your Perfect Companion</h1>
             <div class="page-subtitle">Every pet deserves a loving home, and every heart deserves a loyal friend</div>
             
-            <!-- Filter Section -->
+
+                     <!-- Filter Section -->
             <div class="filter-section">
                 <div class="filter-title">
                     <i class="fas fa-search"></i>
                     Discover Your Ideal Pet Match
                 </div>
+
                 <form method="GET" action="" class="filter-form">
                     <div class="form-group">
-                        <label for="animal_type">
+                        <label for="category">
                             <i class="fas fa-paw"></i>
                             Animal Type
                         </label>
-                        <select name="animal_type" id="animal_type">
+                        <select name="category" id="category">
                             <option value="">All Types</option>
                             <?php foreach ($animal_types as $type): ?>
                                 <option value="<?= htmlspecialchars($type) ?>" 
-                                        <?= $animal_type === $type ? 'selected' : '' ?>>
+                                        <?= $category === $type ? 'selected' : '' ?>>
                                     <?= ucfirst(htmlspecialchars($type)) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -707,14 +604,14 @@ $animal_types = $tables;
                     </div>
                     
                     <div class="form-group">
-                        <label for="gender">
+                        <label for="pol">
                             <i class="fas fa-venus-mars"></i>
                             Gender
                         </label>
-                        <select name="gender" id="gender">
+                        <select name="pol" id="pol">
                             <option value="">Any Gender</option>
-                            <option value="male" <?= $gender === 'male' ? 'selected' : '' ?>>Male</option>
-                            <option value="female" <?= $gender === 'female' ? 'selected' : '' ?>>Female</option>
+                            <option value="male" <?= $pol === 'male' ? 'selected' : '' ?>>Male</option>
+                            <option value="female" <?= $pol === 'female' ? 'selected' : '' ?>>Female</option>
                         </select>
                     </div>
 
@@ -748,14 +645,12 @@ $animal_types = $tables;
     </select>
 </div>
 
-
-                    
                     <div class="filter-buttons">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-search"></i>
                             Find My Match
                         </button>
-                        <a href="meet_new_buddy.php" class="btn btn-secondary">
+                        <a href="?" class="btn btn-secondary">
                             <i class="fas fa-redo"></i>
                             Clear All
                         </a>
@@ -767,7 +662,7 @@ $animal_types = $tables;
             <div class="results-info">
                 <i class="fas fa-chart-bar"></i>
                 Showing <?= count($animals) ?> of <?= $total_records ?> amazing pets waiting for love
-                <?php if (!empty($animal_type) || !empty($gender) || !empty($min_age) || !empty($max_age)): ?>
+                <?php if (!empty($category) || !empty($pol) || !empty($min_age) || !empty($max_age)): ?>
                     (filtered results)
                 <?php endif; ?>
             </div>
@@ -784,7 +679,29 @@ $animal_types = $tables;
                         <div class="animal-card">
                             <div class="animal-image">
                                 <?php if (!empty($animal['images_url'])): ?>
-                                    <img src="<?= htmlspecialchars($animal['images_url']) ?>" alt="<?= htmlspecialchars($animal['name']) ?>">
+                                   <?php
+                                    $image = trim($animal['images_url']); // исчисти празни места
+
+                                    // Ако е целосен URL (http или https) – користи го директно
+                                    if (preg_match('/^https?:\/\//', $image)) {
+                                        $imgSrc = $image;
+                                    } 
+                                    // Ако е локална слика
+                                    else {
+                                        // Прво пробуваме да ја најдеме во директната патека од базата
+                                        $localPath = "/NewHomeForPet/" . $image;
+                                        if (file_exists(__DIR__ . '/../../' . $image)) {
+                                            $imgSrc = $localPath;
+                                        } 
+                                        // Ако не постои таму, пробуваме во uploads/
+                                        else {
+                                            $imgSrc = "/NewHomeForPet/uploads/" . basename($image);
+                                        }
+                                    }
+                                    ?>
+
+
+                                    <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($animal['name']) ?>">
                                 <?php else: ?>
                                     <div class="emoji">
                                         <?php
@@ -796,15 +713,16 @@ $animal_types = $tables;
                                             'hamsters' => '🐹',
                                             'chinchillas' => '🐭'
                                         ];
-                                        echo $emoji_map[$animal['animal_type']] ?? '🐾';
+                                        echo $emoji_map[$animal['category']] ?? '🐾';
                                         ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
+
                             
-                            <div class="status-badge <?= $animal['adopted'] ? 'status-adopted' : 'status-available' ?>">
+                            <!-- <div class="status-badge <?= $animal['adopted'] ? 'status-adopted' : 'status-available' ?>">
                                 <?= $animal['adopted'] ? 'Adopted' : 'Available' ?>
-                            </div>
+                            </div> -->
                             
                             <div class="animal-info">
                                 <h3 class="animal-name"><?= htmlspecialchars($animal['name']) ?></h3>
@@ -817,7 +735,7 @@ $animal_types = $tables;
                                 <div class="animal-details">
                                     <div class="detail-item">
                                         <div class="detail-label"><i class="fas fa-paw"></i> Type</div>
-                                        <div class="detail-value"><?= ucfirst(htmlspecialchars($animal['animal_type'])) ?></div>
+                                        <div class="detail-value"><?= ucfirst(htmlspecialchars($animal['category'])) ?></div>
                                     </div>
                                     <div class="detail-item">
                                         <div class="detail-label"><i class="fas fa-birthday-cake"></i> Age</div>
@@ -831,7 +749,7 @@ $animal_types = $tables;
                                                 'maski' => 'Male',
                                                 'zenski' => 'Female'
                                             ];
-                                            echo $gender_display[$animal['gender']] ?? ucfirst(htmlspecialchars($animal['gender']));
+                                            echo $gender_display[$animal['pol']] ?? ucfirst(htmlspecialchars($animal['pol']));
                                             ?>
                                         </div>
                                     </div>
@@ -856,17 +774,18 @@ $animal_types = $tables;
                                     <?php endif; ?>
                                 </div>
                                 
-                                <a href="meet.php?id=<?= $animal['id'] ?>&type=<?= $animal['animal_type'] ?>" 
-                                   class="btn btn-primary" style="width: 100%; justify-content: center;">
-                                    <i class="fas fa-heart"></i>
-                                    Meet <?= htmlspecialchars($animal['name']) ?>
-                                </a>
+<a href="/NewHomeForPet/meet/show?id=<?= $animal['id'] ?>&type=<?= $animal['category'] ?>" 
+   class="btn btn-primary" style="width: 100%; justify-content: center;">
+    <i class="fas fa-heart"></i>
+    Meet <?= htmlspecialchars($animal['name']) ?>
+</a>
+
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Pagination -->
+              <!-- Pagination -->
                 <?php if ($total_pages > 1): ?>
                     <div class="pagination">
                         <!-- Previous Page -->
@@ -915,16 +834,9 @@ $animal_types = $tables;
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2025 PetHeart - Where Every Pet Finds Love</p>
-                <p>Made with <i class="fas fa-heart" style="color: #ff6b9d;"></i> for our furry, feathered, and fuzzy friends</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
+<?php include __DIR__ . '/../partials/footer.php'; ?>
+    
+ <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Simple hover effects for cards
             const cards = document.querySelectorAll('.animal-card');
@@ -969,3 +881,5 @@ $animal_types = $tables;
             });
         });
     </script>
+</body>
+</html>

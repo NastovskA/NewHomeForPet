@@ -14,25 +14,23 @@ if ($conn->connect_error) {
     exit;
 }
 
-// 🐾 Табели со животни
-$tables = ['cats', 'dogs', 'parrots', 'hamsters', 'rabbits', 'chinchillas'];
+// 🐾 Земи ги сите животни од табелата animals
+$sql = "SELECT city, country, lat, lon, category FROM animals";
+$result = $conn->query($sql);
+
 $pets = [];
 
-foreach ($tables as $table) {
-    // 👀 Проверка дали табелата постои (опционално)
-    $result = $conn->query("SELECT city, country, lat, lon FROM `$table`");
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // 📍 Игнорирај ако нема координати
-            if (!empty($row['lat']) && !empty($row['lon'])) {
-                $pets[] = [
-                    'type'    => $table,
-                    'city'    => $row['city'],
-                    'country' => $row['country'],
-                    'lat'     => floatval($row['lat']),
-                    'lon'     => floatval($row['lon'])
-                ];
-            }
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // 📍 Игнорирај ако нема координати
+        if (!empty($row['lat']) && !empty($row['lon'])) {
+            $pets[] = [
+                'type'    => $row['category'],   // 👈 категоријата е тип (cats, dogs…)
+                'city'    => $row['city'],
+                'country' => $row['country'],
+                'lat'     => floatval($row['lat']),
+                'lon'     => floatval($row['lon'])
+            ];
         }
     }
 }
