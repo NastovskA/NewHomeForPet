@@ -1,49 +1,40 @@
 
 :root {
-    /* Primary Palette – Soft, Elegant */
-    --primary-color: #3d0092ff;       /* Softer Lavender (slightly richer than before) */
-    --secondary-color: #eae2edff;       /* Soft Blue, calmer and complementary */
-    --accent-secondary: #030c09ff;      /* Soft Mint for contrast elements */
+    --primary-color: #3d0092ff;       
+    --secondary-color: #eae2edff;       
+    --accent-secondary: #030c09ff;      
 
-    /* Backgrounds – Smooth Gradient Flow */
-    --background-dark: rgb(154, 122, 228);     /* Deep lavender for cards and sections */
-    --background-light: rgb(134, 113, 193);    /* Slightly lighter lilac for hover/buttons */
-    --background-lighter: rgb(177, 173, 203);  /* Neutral grayish-purple for page base */
+    --background-dark: rgb(154, 122, 228);     
+    --background-light: rgb(134, 113, 193);    
+    --background-lighter: rgb(177, 173, 203);  
 
-    /* Text Colors */
-    --text-primary: rgba(23, 1, 37, 0.65);          /* Main text */
+    --text-primary: rgba(23, 1, 37, 0.65);          
     --text-secondary: rgba(0, 0, 0, 0.85);
-    --text-muted: rgba(20, 1, 33, 0.65); /* Slightly stronger contrast */
+    --text-muted: rgba(20, 1, 33, 0.65); 
 
-    /* Glassmorphism Variables */
     --glass-light: rgba(255, 255, 255, 0.08);
     --glass-medium: rgba(255, 255, 255, 0.14);
     --glass-strong: rgba(255, 255, 255, 0.22);
     --glass-border: rgba(255, 255, 255, 0.18);
 
-    /* Gradients */
     --primary-gradient: linear-gradient(135deg, var(--primary-color) 0%, #56545aff 100%);
     --secondary-gradient: linear-gradient(135deg, var(--secondary-color) 0%, #f1f1f1ff 100%);
     --accent-gradient: linear-gradient(135deg, var(--accent-color) 0%, #f7f3f0ff 100%);
 
-    /* Shadows and Transitions */
     --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.12);
     --shadow-medium: 0 12px 36px rgba(0, 0, 0, 0.15);
     --shadow-strong: 0 20px 48px rgba(0, 0, 0, 0.22);
 
-    /* Border Radius */
     --border-radius-sm: 12px;
     --border-radius-md: 16px;
     --border-radius-lg: 20px;
     --border-radius-xl: 24px;
     --border-radius-pill: 100px;
 
-    /* Transitions */
     --transition-fast: 0.2s ease-out;
     --transition-medium: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 
-    /* Z-Index */
     --z-background: -1;
     --z-content: 1;
     --z-header: 100;
@@ -1103,7 +1094,6 @@
             }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }

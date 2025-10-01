@@ -21,7 +21,6 @@ class PetModel {
 
     public function getPetById($id) {
         try {
-            // Using your table name "animals" and adjusting for your database structure
             $query = "SELECT 
                         a.*,
                         COALESCE(a.breed, 'Mixed Breed') as breed,
@@ -51,7 +50,6 @@ class PetModel {
         }
     }
 
-    // Additional method to get random pets for homepage
     public function getRandomPets($limit = 10) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE adopted = '0' ORDER BY RAND() LIMIT :limit";
         $stmt = $this->conn->prepare($query);
@@ -61,7 +59,6 @@ class PetModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Method to search pets by criteria
     public function searchPets($criteria = []) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE adopted = '0'";
         $params = [];
@@ -103,7 +100,6 @@ class PetModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Method to update pet adoption status
     public function markAsAdopted($id) {
         try {
             $query = "UPDATE " . $this->table_name . " SET adopted = '1' WHERE id = :id";

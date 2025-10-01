@@ -10,18 +10,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 
-// Example user data - in a real application, this would come from session or database
 $user_id = 1;
 $user_name = "Angela";
 $user_email = "angelanastovska23@gmail.com";
 
-// If form is submitted
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Save all answers
     $answers = $_POST;
 
-    // Check if all required fields are answered
     $required_fields = [
         'full_name', 'animal_type', 'living_place', 'dob', 'occupation',
         'email', 'phone', 'living_situation', 'community_agree', 'children_info',
@@ -455,7 +451,6 @@ exit;
             <form method="POST" id="adoptionForm">
                 <input type="hidden" name="animal_id" value="0">
                 
-                <!-- Step 1: Personal Information -->
                 <fieldset class="active" id="fieldset-1">
                     <div class="fieldset-header">
                         <h3><i class="fas fa-user"></i> Personal Information</h3>
@@ -506,14 +501,13 @@ exit;
                     </div>
                     
                     <div class="button-group">
-                        <div></div> <!-- Empty div for spacing -->
+                        <div></div> 
                         <button type="button" class="btn-primary next" data-next="2">
                             Next <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </fieldset>
 
-                <!-- Step 2: Contact & Family Information -->
                 <fieldset id="fieldset-2">
                     <div class="fieldset-header">
                         <h3><i class="fas fa-address-book"></i> Contact & Family Information</h3>
@@ -572,7 +566,6 @@ exit;
                     </div>
                 </fieldset>
 
-                <!-- Step 3: Housing Information -->
                 <fieldset id="fieldset-3">
                     <div class="fieldset-header">
                         <h3><i class="fas fa-home"></i> Housing Information</h3>
@@ -642,7 +635,6 @@ exit;
                     </div>
                 </fieldset>
 
-                <!-- Step 4: Pet Care & Responsibility -->
                 <fieldset id="fieldset-4">
                     <div class="fieldset-header">
                         <h3><i class="fas fa-heart"></i> Pet Care & Responsibility</h3>
@@ -683,7 +675,6 @@ exit;
                     </div>
                 </fieldset>
 
-                <!-- Step 5: Experience & Final Details -->
                 <fieldset id="fieldset-5">
                     <div class="fieldset-header">
                         <h3><i class="fas fa-clipboard-check"></i> Experience & Final Details</h3>
@@ -778,7 +769,6 @@ exit;
             const progressBar = document.getElementById('progress-bar');
             let currentStep = 1;
             
-            // Update progress bar and steps
             function updateProgress() {
                 const percentage = ((currentStep - 1) / (fieldsets.length - 1)) * 100;
                 progressBar.style.width = percentage + '%';
@@ -792,7 +782,6 @@ exit;
                 });
             }
             
-            // Validate current step
             function validateStep(step) {
                 const currentFieldset = document.getElementById(`fieldset-${step}`);
                 const requiredInputs = currentFieldset.querySelectorAll('[required]');
@@ -803,7 +792,6 @@ exit;
                         isValid = false;
                         input.style.borderColor = 'var(--error-color)';
                         
-                        // Add event listener to remove error style when user starts typing
                         input.addEventListener('input', function() {
                             if (this.value.trim()) {
                                 this.style.borderColor = '';
@@ -815,7 +803,6 @@ exit;
                 return isValid;
             }
             
-            // Go to specific step
             function goToStep(step) {
                 fieldsets.forEach(fieldset => fieldset.classList.remove('active'));
                 document.getElementById(`fieldset-${step}`).classList.add('active');
@@ -824,7 +811,6 @@ exit;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             
-            // Next button event listeners
             nextButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const nextStep = parseInt(this.getAttribute('data-next'));
@@ -837,7 +823,6 @@ exit;
                 });
             });
             
-            // Previous button event listeners
             prevButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const prevStep = parseInt(this.getAttribute('data-prev'));
@@ -845,7 +830,6 @@ exit;
                 });
             });
             
-            // Form submission
             document.getElementById('adoptionForm').addEventListener('submit', function(e) {
                 if (!validateStep(currentStep)) {
                     e.preventDefault();
@@ -853,18 +837,14 @@ exit;
                     return;
                 }
                 
-                // Show loading state
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 submitBtn.disabled = true;
                 
-                // Allow form to submit
 
                 
             });
-            
-            // Initialize progress
             updateProgress();
         });
     </script>

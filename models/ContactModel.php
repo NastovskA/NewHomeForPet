@@ -19,17 +19,14 @@ class ContactModel {
     
     public function saveContactMessage($name, $email, $subject, $message) {
         try {
-            // Check if the table exists, if not create it
             $this->createTableIfNotExists();
             
-            // Prepare insert query
             $query = "INSERT INTO " . $this->table_name . " 
                      (name, email, subject, message, created_at) 
                      VALUES (:name, :email, :subject, :message, NOW())";
             
             $stmt = $this->db->prepare($query);
             
-            // Sanitize and bind values
             $name = htmlspecialchars(strip_tags($name));
             $email = htmlspecialchars(strip_tags($email));
             $subject = htmlspecialchars(strip_tags($subject));
@@ -42,18 +39,15 @@ class ContactModel {
             
             return $stmt->execute();
         } catch (PDOException $e) {
-            // Log error or handle it appropriately
             error_log("Database error: " . $e->getMessage());
             return false;
         }
     }
     
     private function createTableIfNotExists() {
-        // Check if table exists
         $checkTable = $this->db->query("SHOW TABLES LIKE '" . $this->table_name . "'");
         
         if ($checkTable->rowCount() == 0) {
-            // Create the table if it doesn't exist
             $createTable = "CREATE TABLE " . $this->table_name . " (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,

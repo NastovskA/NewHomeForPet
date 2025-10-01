@@ -21,11 +21,10 @@ try {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    // Враќаме специфичен статус за redirect со точна локација
     echo json_encode([
         'status' => 'redirect_register',
         'message' => 'Email not found. Redirecting to register.',
-        'redirect_url' => 'https://localhost/NewHomeForPet/views/users/register.php'  // тука ја ставаш директната URL
+        'redirect_url' => 'https://localhost/NewHomeForPet/views/users/register.php'  
     ]);
     exit();
 }

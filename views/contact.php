@@ -2,7 +2,6 @@
 // views/contact.php
 require_once __DIR__ . '/partials/header.php';
 
-// Kontakt informacii
 $contactInfo = [
     'address' => '123 Pet Street, Skopje 1000',
     'email' => 'petheart111@gmail.com',
@@ -20,8 +19,8 @@ $contactInfo = [
     <meta name="description" content="Reach out to PetHeart for support, inquiries, or feedback. We're here to connect with pet lovers worldwide.">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS styles from the previous implementation */
-        :root {
+
+:root {
             --primary-color: #8a2be2;
             --secondary-color: #4e86fc;
             --accent-color: #ffdf7e;

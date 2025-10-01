@@ -1,5 +1,5 @@
 <?php
-// Конекција со базата
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -8,7 +8,7 @@ $dbname = "adoption_fostering";
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
-// Функција за геокодирање
+
 function getCoordinatesByCity($city) {
     $city = urlencode($city);
     $url = "https://nominatim.openstreetmap.org/search?city={$city}&format=json&limit=1";
@@ -27,7 +27,6 @@ function getCoordinatesByCity($city) {
     return ['lat'=>0, 'lon'=>0];
 }
 
-// Земи ги сите животни од табелата animals
 $result = $conn->query("SELECT id, city FROM animals");
 
 if ($result && $result->num_rows > 0) {
@@ -38,7 +37,7 @@ if ($result && $result->num_rows > 0) {
 
         $conn->query("UPDATE animals SET lat=$lat, lon=$lon WHERE id={$row['id']}");
 
-        sleep(1); // Nominatim limit: 1 request per second
+        sleep(1); 
         echo "Updated animal id {$row['id']} ({$row['city']}) → [$lat, $lon]<br>";
         flush();
     }

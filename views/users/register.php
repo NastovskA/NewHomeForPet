@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Configuration
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'adoption_fostering');
 define('DB_USER', 'root');

@@ -1,9 +1,10 @@
 <?php
-// Подеси конекција кон базата
+//OVA SAMO EDNAS PREKU BROWSER GO OTVARAME ZA DA SE NAPOLNI BAZATA SO SLIKI
+
 $host = "localhost";
-$user = "root"; // или твој user
-$pass = "";     // лозинка ако имаш
-$db   = "adoption_fostering"; // твојата база
+$user = "root"; 
+$pass = "";     
+$db   = "adoption_fostering"; 
 
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
@@ -14,7 +15,7 @@ if ($conn->connect_error) {
 $apiKey = "live_0M8GeiSzTc2Upjc5HJUYlnScPsmvnt1NiqnY8x5BEmWmYLJ3m193Cpwvs0fccUrc";
 
 for ($id = 1; $id <= 70; $id++) {
-    // Повлечи една слика од API
+
     $url = "https://api.thecatapi.com/v1/images/search?limit=1";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -28,8 +29,7 @@ for ($id = 1; $id <= 70; $id++) {
     if (!empty($data[0]['url'])) {
         $images_url = $data[0]['url'];
 
-        // Апдејтирај ја сликата во базата
-        $stmt = $conn->prepare("UPDATE cats SET images_url = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE animals SET images_url = ? WHERE id = ?");
         $stmt->bind_param("si", $images_url, $id);
         $stmt->execute();
 

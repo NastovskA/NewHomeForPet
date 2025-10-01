@@ -1,6 +1,5 @@
 
  :root {
- /* Professional Color Palette */
  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -12,7 +11,6 @@
  --lavender-gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
  --rose-gradient: linear-gradient(135deg, #fb7185 0%, #e11d48 100%);
  
- /* Light Mode Colors */
  --bg-primary: #fafbff;
  --bg-secondary: #f8faff;
  --bg-tertiary: #f1f5ff;
@@ -23,17 +21,14 @@
  --card-bg: rgba(255, 255, 255, 0.9);
  --card-bg-solid: #ffffff;
  
- /* Glass Effect */
  --glass-bg: rgba(255, 255, 255, 0.15);
  --glass-border: rgba(255, 255, 255, 0.2);
  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
  
- /* Animations */
  --bounce-timing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
  --smooth-timing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
  }
 
- /* Dark Mode Variables */
  [data-theme="dark"] {
  --bg-primary: #0f0f23;
  --bg-secondary: #1a1a2e;
@@ -74,7 +69,6 @@
  transition: background 0.3s ease, color 0.3s ease;
  }
 
- /* Dark mode body adjustments */
  [data-theme="dark"] body {
  background: 
  radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
@@ -85,7 +79,6 @@
  linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
  }
 
- /* Theme Toggle Button */
  .theme-toggle {
  position: fixed;
  top: 50%;
@@ -116,7 +109,6 @@
  transition: all 0.3s ease;
  }
 
- /* Floating Bubbles Background */
  .bubbles-container {
  position: fixed;
  top: 0;
@@ -156,7 +148,6 @@
  background: linear-gradient(45deg, #8b5cf6, #7c3aed);
  }
 
- /* Enhanced Header */
  header {
  position: fixed;
  top: 0;
@@ -310,7 +301,6 @@
  animation: slideInUp 1s var(--bounce-timing) 0.2s both;
  }
 
- /* Enhanced Pet Fact Banner */
  .pet-fact-banner {
  max-width: 700px;
  margin: 40px auto;

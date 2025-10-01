@@ -13,17 +13,6 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-    
-    //     SELECT id, name, images_url FROM rabbits WHERE adopted = '0'
-    //     UNION ALL
-    
-
-
-         
-        
-       
-    // Query name and image_url for all animals, 0 deka e free, 1 deka e posvoeno
     $query = "
         SELECT id, name, images_url FROM dogs WHERE adopted = '0' 
         UNION ALL
@@ -44,7 +33,6 @@ try {
     $stmt->execute();
     $pets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Ensure ID is integer & fallback for missing images
     foreach ($pets as &$pet) {
         $pet['id'] = (int)$pet['id'];
         if (empty($pet['images_url'])) {

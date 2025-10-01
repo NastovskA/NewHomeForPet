@@ -13,12 +13,10 @@ class PetController {
         $pet = $this->petModel->getPetById($id);
         
         if ($pet) {
-            // Load pet details view
             require_once 'views/partials/header.php';
             require_once 'views/pets/details.php';
             require_once 'views/partials/footer.php';
         } else {
-            // Show 404 error
             require_once 'views/errors/404.php';
         }
     }

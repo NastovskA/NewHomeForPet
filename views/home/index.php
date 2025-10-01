@@ -2,14 +2,12 @@
 // views/home/index.php
 require_once __DIR__ . '/../partials/header.php';
 
-// Get all facts from the model
 require_once 'models/FactModel.php';
 $factModel = new FactModel();
 $allFacts = $factModel->getAllFacts();
 $jsonFacts = json_encode($allFacts);
 ?>
 
-<!-- Hero Section -->
 <section id="hero" class="hero">
     <div class="hero-content">
         <h1>Every Heart Deserves Love</h1>
@@ -17,7 +15,6 @@ $jsonFacts = json_encode($allFacts);
             Unleash love at first click—where playful paws meet powerful code to spark lifelong companionship.
         </p>
         
-        <!-- Enhanced Pet Fact Banner -->
         <div class="pet-fact-banner">
             <div class="floating-particles">
                 <div class="particle"></div>
@@ -48,7 +45,6 @@ $jsonFacts = json_encode($allFacts);
 
     </div>
 
-    <!-- Pet Carousel -->
     <div class="pets-section" id="pets">
         <div class="pets-carousel">
             <div class="pets-track" id="pets-track">
@@ -58,7 +54,6 @@ $jsonFacts = json_encode($allFacts);
                         $genderClass = isset($pet['gender']) && strtolower($pet['gender']) === 'female' ? 'female' : 'male';
                         $imagePath = isset($pet['images_url']) ? $pet['images_url'] : 'public/assets/images/default-pet.jpg';
                         
-                        // Adjust path for specific directories
                         if (strpos($pet['images_url'], 'sliki_chinchillas/') === 0 || 
                             strpos($pet['images_url'], 'parrots/') === 0 || 
                             strpos($pet['images_url'], 'rabbits/') === 0 || 
@@ -88,13 +83,11 @@ $jsonFacts = json_encode($allFacts);
         </div>
     </div>
 
-     <!-- Theme Toggle Button -->
  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
  <i class="fas fa-moon" id="themeIcon"></i>
  </button>
 </section>
 
-<!-- Stats Section -->
 <section class="stats">
     <div class="stats-grid">
         <div class="stat-card">
@@ -116,11 +109,9 @@ $jsonFacts = json_encode($allFacts);
     </div>
 </section>
 
-<!-- World Map Section -->
 <?php include 'views/mapa.php'; ?>
 
 <script>
-// Pass the initial fact to JavaScript
 var initialFact = "<?php echo addslashes($randomFact); ?>";
 </script>
 
@@ -134,7 +125,6 @@ function toggleTheme() {
     localStorage.setItem('theme', newTheme);
 }
 
-// Load saved theme
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 </script>

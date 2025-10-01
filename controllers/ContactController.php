@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/ContactModel.php';
-require __DIR__ . '/../vendor/autoload.php'; // PHPMailer autoload
+require __DIR__ . '/../vendor/autoload.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -9,7 +9,6 @@ class ContactController {
     private $model;
 
     public function __construct() {
-        // Initialize database connection
         require_once __DIR__ . '/../config/database.php';
         $database = new Database();
         $db = $database->getConnection();
@@ -18,15 +17,12 @@ class ContactController {
     }
 
     public function index() {
-        // Start session if not already started
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
 
-        // Get contact info from database if needed
         $contactInfo = $this->model->getContactInfo();
 
-        // Get messages from session (success/error)
         $message = '';
         $messageType = '';
         if (isset($_SESSION['contact_message'])) {
@@ -36,12 +32,10 @@ class ContactController {
             unset($_SESSION['contact_message_type']);
         }
 
-        // Include contact view
         require_once __DIR__ . '/../views/contact.php';
     }
 
     public function send() {
-        // Start session
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -49,17 +43,14 @@ class ContactController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $this->handleFormSubmission($_POST);
 
-            // Store message in session for feedback
             $_SESSION['contact_message'] = $result['message'];
             $_SESSION['contact_message_type'] = $result['success'] ? 'success' : 'error';
 
-            // Redirect accordingly
             $redirectUrl = $result['success'] ? BASE_URL . '/home' : BASE_URL . '/contact';
             header("Location: $redirectUrl");
             exit();
         }
 
-        // Redirect if accessed not via POST
         header("Location: " . BASE_URL . "/contact");
         exit();
     }
@@ -70,7 +61,6 @@ class ContactController {
         $subject = trim($postData['subject'] ?? 'No Subject');
         $message = trim($postData['message'] ?? '');
 
-        // Validation
         if (empty($name) || empty($email) || empty($message)) {
             return ['success' => false, 'message' => 'Please fill in all required fields'];
         }
@@ -79,26 +69,23 @@ class ContactController {
             return ['success' => false, 'message' => 'Please provide a valid email address'];
         }
 
-        // Save message in database
         $saved = $this->model->saveContactMessage($name, $email, $subject, $message);
         if (!$saved) {
             return ['success' => false, 'message' => 'Database error. Please try again.'];
         }
 
-        // Send email using PHPMailer
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'petheart111@gmail.com'; // Your Gmail
-            $mail->Password   = 'ufcldlfnkbiqpnya';     // App password
+            $mail->Username   = 'petheart111@gmail.com'; 
+            $mail->Password   = 'ufcldlfnkbiqpnya';     // App password od gmail go zimam pri aftentifikacija
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
-            // Email to site admin
             $mail->setFrom('petheart111@gmail.com', 'PetHeart Contact Form');
-            $mail->addReplyTo($email, $name); // User email for reply
+            $mail->addReplyTo($email, $name); 
             $mail->addAddress('petheart111@gmail.com'); 
             $mail->isHTML(true);
             $mail->Subject = "Contact Form: $subject";
@@ -118,7 +105,6 @@ class ContactController {
 
             $mail->send();
 
-            // Optional: Auto-reply to user
             $autoreply = new PHPMailer(true);
             $autoreply->isSMTP();
             $autoreply->Host       = 'smtp.gmail.com';

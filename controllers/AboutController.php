@@ -1,7 +1,6 @@
 <?php
 class AboutController {
     public function index() {
-        // Можете да додадете податоци од модел ако е потребно
         $data = [
             'pageTitle' => 'About Us - PetHeart',
             'pageDescription' => 'Discover PetHeart\'s mission to connect pet lovers worldwide'

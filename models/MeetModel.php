@@ -38,7 +38,6 @@ class MeetModel {
 
         $where_clause = $conditions ? "WHERE " . implode(" AND ", $conditions) : "";
 
-        // Count total
         $count_sql = "SELECT COUNT(*) FROM {$this->table} $where_clause";
         $count_stmt = $this->pdo->prepare($count_sql);
         foreach ($params as $key => $value) {
@@ -48,7 +47,6 @@ class MeetModel {
         $total_records = $count_stmt->fetchColumn();
         $total_pages = ceil($total_records / $per_page);
 
-        // Fetch paginated data
         $sql = "SELECT * FROM {$this->table} $where_clause ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->pdo->prepare($sql);
         foreach ($params as $key => $value) {

@@ -13,7 +13,6 @@ class GiveModel {
         try {
             $imagePath = null;
             
-            // Проверка и креирање на uploads директориум ако не постои
             if (!file_exists('../uploads')) {
                 mkdir('../uploads', 0777, true);
             }
@@ -23,7 +22,6 @@ class GiveModel {
                 $targetPath = '../' . $imagePath;
                 
                 if (move_uploaded_file($data['petImage']['tmp_name'], $targetPath)) {
-                    // Успешно прикачување
                 } else {
                     error_log("Failed to move uploaded file");
                     $imagePath = null;

@@ -13,7 +13,6 @@ class FactController {
     public function index() {
         $facts = $this->factModel->getAllFacts();
         
-        // Load facts view
         require_once 'views/partials/header.php';
         require_once 'views/facts/index.php';
         require_once 'views/partials/footer.php';

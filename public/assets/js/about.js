@@ -1,6 +1,5 @@
 // public/assets/js/about.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Navigation scroll effect
     const navbar = document.getElementById('navbar');
     
     window.addEventListener('scroll', function() {
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Animation for timeline items
     const timelineItems = document.querySelectorAll('.timeline-item');
     
     const observer = new IntersectionObserver((entries) => {

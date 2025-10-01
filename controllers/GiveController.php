@@ -5,7 +5,7 @@ class GiveController {
     private $model;
 
     public function __construct() {
-        $this->model = new GiveModel(); // Поправено име на модел
+        $this->model = new GiveModel(); 
     }
 
     public function index() {
@@ -29,7 +29,6 @@ class GiveController {
             $result = $this->model->savePet($data);
 
             if ($result) {
-                // Успешен внес → редирекција на почетна
                 header("Location: /NewHomeForPet/home/index");
                 exit();
             } else {

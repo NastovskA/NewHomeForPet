@@ -2,7 +2,6 @@
 // views/errors/404.php
 http_response_code(404);
 
-// Дефинирајте ги патеките ако не се веќе дефинирани
 if (!defined('BASE_URL')) {
     define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/NewHomeForPet');
 }
